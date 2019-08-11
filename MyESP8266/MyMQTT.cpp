@@ -38,6 +38,7 @@ void MyMQTT::begin(){
 void MyMQTT::loop(){
 	// stay connected
 	while(!client.connected()){
+		Serial.println("not conn");
 		if(client.connect(config.wifi.host.c_str())){
 			lastTime = 0;
 			subscribe();

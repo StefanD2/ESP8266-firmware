@@ -36,8 +36,6 @@ class MyESP8266{
 		
 		void publish(payload_t payload);
 		void addCallback(std::function<void(payload_t)> callback);
-		
-		boolean setConfig(config_t config);
 
 	private:
 		MySPIFFSConfig mySPIFFSConfig;

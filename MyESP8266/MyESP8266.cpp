@@ -53,15 +53,13 @@ void MyESP8266::addCallback(std::function<void(payload_t)> callback){
 	mqtt.addCallback(callback);
 }
 
-boolean setConfig(config_t config){
-	mySPIFFSConfig.setConfig(config);
-}
-
 // ------------------------------------------------------ private functions -----------------------------------------------------
 
 void MyESP8266::callback_config(payload_t payload){
+	Serial.println("enter callback");	
 	if((payload.topic.indexOf(config.wifi.host + "/config") + 1)){
 		if(payload.topic.endsWith("/get") && payload.msg.equals("get")){
+			Serial.println("send callback");
 			payload.msg = "";
 			payload.msg += "wifi:{ssid:" + config.wifi.ssid + ",pw:" + config.wifi.pw + ",host:" + config.wifi.host + "},";
 			payload.msg += "mqtt:{ip:" + config.mqtt.ip + ",port:" + config.mqtt.port + ",topics:" + config.mqtt.topics + "},";
