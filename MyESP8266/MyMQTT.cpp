@@ -38,14 +38,13 @@ void MyMQTT::begin(){
 void MyMQTT::loop(){
 	// stay connected
 	while(!client.connected()){
-		Serial.println("not conn");
 		if(client.connect(config.wifi.host.c_str())){
 			lastTime = 0;
 			subscribe();
 		}
 	}
 	if(millis() - lastTime > 1000){
-		publish({"BROADCAST/ONLINE",config.wifi.host});
+		publish({"BROADCAST/ONLINE",config.wifi.host + " " + millis()});
 		lastTime = millis();
 	}
 	client.loop();
@@ -74,6 +73,8 @@ void MyMQTT::subscribe(){
 	String topics = config.mqtt.topics;
 	topics.replace("*host*",config.wifi.host);
 	for(size_t i = 0; i < topicCounter; i++){
-		client.subscribe(topics.substring((lastPos?(lastPos+1):lastPos),(lastPos = (topics.indexOf(';',(lastPos+1))))).c_str());
+		String sub = topics.substring((lastPos?(lastPos+1):lastPos),(lastPos = (topics.indexOf(';',(lastPos+1)))));
+		Serial.println(sub);
+		client.subscribe(sub.c_str());
 	}
 }
