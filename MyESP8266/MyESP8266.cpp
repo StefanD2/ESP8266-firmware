@@ -6,7 +6,7 @@ MyESP8266::MyESP8266(){
 	MyESP8266(nullptr);
 }
 
-MyESP8266::MyESP8266(std::function<void(void)> alwaysRunning):mySPIFFSConfig(),mqtt(),server(),updater(){
+MyESP8266::MyESP8266(std::function<void(void)> alwaysRunning):mySPIFFSConfig(),mqtt(alwaysRunning),server(),updater(){
 	this->alwaysRunning = alwaysRunning;
 }
 
@@ -28,7 +28,7 @@ void MyESP8266::begin(){
 	server.begin();
 	MDNS.addService("http", "tcp", 80);
 	mqtt.setConfig(config);
-	mqtt.begin();
+	mqtt.begin(); // add always running funtion
 	mqtt.addCallback([this](payload_t payload){this->callback_config(payload);});
 }
 

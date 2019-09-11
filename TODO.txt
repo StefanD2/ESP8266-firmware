@@ -1,0 +1,5 @@
+libraries als PlatformIO project hinzufügen und internen libs ordner als globalen lib ordner verwenden
+hinzufügen zu git
+FirmwareCreateFiles zu git hinzufügen
+
+git remote add origin https://github.com/StefanD2/ESP8266Firmware.git

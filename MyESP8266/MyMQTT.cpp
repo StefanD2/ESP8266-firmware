@@ -6,6 +6,7 @@ MyMQTT::MyMQTT(){
 	callbacksSize = 0;
 }
 
+
 MyMQTT::~MyMQTT(){
 	free(callbacks);
 }
