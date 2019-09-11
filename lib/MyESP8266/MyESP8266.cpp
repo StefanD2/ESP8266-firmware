@@ -6,7 +6,7 @@ MyESP8266::MyESP8266(){
 	MyESP8266(nullptr);
 }
 
-MyESP8266::MyESP8266(std::function<void(void)> alwaysRunning):mySPIFFSConfig(),mqtt(alwaysRunning),server(),updater(){
+MyESP8266::MyESP8266(std::function<void(void)> alwaysRunning):mySPIFFSConfig(),mqtt(),server(),updater(){
 	this->alwaysRunning = alwaysRunning;
 }
 
