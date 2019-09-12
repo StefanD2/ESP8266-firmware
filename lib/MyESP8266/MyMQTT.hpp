@@ -19,6 +19,7 @@
 #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 #include <functional>
+#include <vector>
 #include "MySPIFFSConfig.hpp"
 
 typedef struct {
@@ -30,7 +31,6 @@ typedef struct {
 class MyMQTT{
 	public:
 		MyMQTT();
-		~MyMQTT();
 		void setConfig(config_t config);
 		boolean publish(payload_t payload);
 		void addCallback(std::function<void(payload_t)> callback);
@@ -42,8 +42,7 @@ class MyMQTT{
 		config_t config;
 		PubSubClient client;
 		WiFiClient wificlient;
-		std::function<void(payload_t)>* callbacks;
-		size_t callbacksSize;
+		std::vector<std::function<void(payload_t)>> callbacks;
 		unsigned long nextReconnect;
 		unsigned long lastTime;
 		

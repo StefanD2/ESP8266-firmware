@@ -22,14 +22,17 @@ void MyESP8266::begin(){
 	onDissconnect = WiFi.onStationModeDisconnected([](const WiFiEventStationModeDisconnected & event) {
 		ESP.restart();
 	});
-	Serial.println(WiFi.localIP());
+	yield();
 	MDNS.begin(config.wifi.host.c_str());
 	updater.setup(&server, config.updateServer.path.c_str(), config.updateServer.user.c_str(), config.updateServer.pw.c_str());
 	server.begin();
 	MDNS.addService("http", "tcp", 80);
 	mqtt.setConfig(config);
 	mqtt.begin(); // add always running funtion
+	Serial.println("after mqtt");
 	mqtt.addCallback([this](payload_t payload){this->callback_config(payload);});
+	Serial.println("after callback");
+	Serial.flush();
 }
 
 void MyESP8266::loop(){

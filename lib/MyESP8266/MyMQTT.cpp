@@ -3,13 +3,8 @@
 // --------------------------- public functions ----------------------------
 
 MyMQTT::MyMQTT(){
-	callbacksSize = 0;
+	callbacks.reserve(2);
 	nextReconnect = 0;
-}
-
-
-MyMQTT::~MyMQTT(){
-	free(callbacks);
 }
 
 void MyMQTT::setConfig(config_t config){
@@ -24,13 +19,8 @@ boolean MyMQTT::publish(payload_t payload){
 	return client.publish(payload.topic.c_str(),payload.msg.c_str());
 }
 
-void MyMQTT::addCallback(std::function<void(payload_t)> callback){
-	if(callbacksSize == 0)
-		callbacks = (std::function<void(payload_t)>*) malloc(sizeof(std::function<void(payload_t)>));
-	else
-		callbacks = (std::function<void(payload_t)>*) realloc(callbacks, (callbacksSize + 1) * sizeof(std::function<void(payload_t)>));
-	callbacks[callbacksSize] = callback;
-	callbacksSize++;
+void MyMQTT::addCallback(std::function<void(payload_t)> callback){ //FIXME
+	callbacks.push_back(callback);
 }
 
 void MyMQTT::begin(){
@@ -41,14 +31,16 @@ void MyMQTT::loop(){
 	// stay connected
 	int connectionAttempt = 0;
 	while(!client.connected() && nextReconnect < millis()) {
+		Serial.printf("connecting: %d\n",connectionAttempt);
 		if(client.connect(config.wifi.host.c_str())){
 			lastTime = 0;
 			subscribe();
 		}
 		connectionAttempt++;
 		if(connectionAttempt > 3){
-			nextReconnect = millis() + 15L * 60L * 1000L;
+			nextReconnect = millis() + 900000L;
 		}
+		yield();
 	}
 	if(millis() - lastTime > 1000){
 		publish({"BROADCAST/ONLINE",config.wifi.host + " " + millis()});
@@ -66,7 +58,7 @@ void MyMQTT::callback(char* topic, byte* payload, unsigned int length){
 	for(unsigned int i = 0; i < length; i++)
 		payloadS.msg += (char) payload[i];
 	// call callback functions
-	for(size_t i = 0; i < callbacksSize; i++)
+	for(size_t i = 0; i < callbacks.size(); i++)
 		callbacks[i](payloadS);
 }
 
