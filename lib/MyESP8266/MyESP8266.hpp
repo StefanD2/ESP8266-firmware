@@ -37,6 +37,8 @@ class MyESP8266{
 		void publish(payload_t payload);
 		void addCallback(std::function<void(payload_t)> callback);
 
+		config_t getConfig();
+
 	private:
 		MySPIFFSConfig mySPIFFSConfig;
 		MyMQTT mqtt;

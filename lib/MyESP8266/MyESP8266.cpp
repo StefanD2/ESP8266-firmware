@@ -53,6 +53,10 @@ void MyESP8266::addCallback(std::function<void(payload_t)> callback){
 	mqtt.addCallback(callback);
 }
 
+config_t MyESP8266::getConfig(){
+	return config;
+}
+
 // ------------------------------------------------------ private functions -----------------------------------------------------
 
 void MyESP8266::callback_config(payload_t payload){
