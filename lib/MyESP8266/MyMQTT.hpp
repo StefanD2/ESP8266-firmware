@@ -44,6 +44,7 @@ class MyMQTT{
 		WiFiClient wificlient;
 		std::function<void(payload_t)>* callbacks;
 		size_t callbacksSize;
+		unsigned long nextReconnect;
 		unsigned long lastTime;
 		
 		

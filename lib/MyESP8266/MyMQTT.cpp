@@ -4,6 +4,7 @@
 
 MyMQTT::MyMQTT(){
 	callbacksSize = 0;
+	nextReconnect = 0;
 }
 
 
@@ -38,10 +39,15 @@ void MyMQTT::begin(){
 
 void MyMQTT::loop(){
 	// stay connected
-	while(!client.connected()){
+	int connectionAttempt = 0;
+	while(!client.connected() && nextReconnect < millis()) {
 		if(client.connect(config.wifi.host.c_str())){
 			lastTime = 0;
 			subscribe();
+		}
+		connectionAttempt++;
+		if(connectionAttempt > 3){
+			nextReconnect = millis() + 15L * 60L * 1000L;
 		}
 	}
 	if(millis() - lastTime > 1000){
