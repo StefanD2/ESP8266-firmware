@@ -31,7 +31,6 @@ void MyMQTT::loop(){
 	// stay connected
 	int connectionAttempt = 0;
 	while(!client.connected() && nextReconnect < millis()) {
-		Serial.printf("connecting: %d\n",connectionAttempt);
 		if(client.connect(config.wifi.host.c_str())){
 			lastTime = 0;
 			subscribe();
@@ -73,7 +72,6 @@ void MyMQTT::subscribe(){
 	topics.replace("*host*",config.wifi.host);
 	for(size_t i = 0; i < topicCounter; i++){
 		String sub = topics.substring((lastPos?(lastPos+1):lastPos),(lastPos = (topics.indexOf(';',(lastPos+1)))));
-		Serial.println(sub);
 		client.subscribe(sub.c_str());
 	}
 }

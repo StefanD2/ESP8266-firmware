@@ -29,7 +29,7 @@
 
 class MyESP8266{	
 	public:
-		MyESP8266();
+		MyESP8266(void);
 		MyESP8266(std::function<void(void)> alwaysRunning);
 		void begin();
 		void loop();

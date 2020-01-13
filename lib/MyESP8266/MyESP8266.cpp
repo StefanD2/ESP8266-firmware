@@ -2,7 +2,7 @@
 
 // ------------------------------------------------------ public functions ------------------------------------------------------
 
-MyESP8266::MyESP8266(){
+MyESP8266::MyESP8266(void){
 	MyESP8266(nullptr);
 }
 
@@ -29,9 +29,7 @@ void MyESP8266::begin(){
 	MDNS.addService("http", "tcp", 80);
 	mqtt.setConfig(config);
 	mqtt.begin(); // add always running funtion
-	Serial.println("after mqtt");
 	mqtt.addCallback([this](payload_t payload){this->callback_config(payload);});
-	Serial.println("after callback");
 	Serial.flush();
 }
 

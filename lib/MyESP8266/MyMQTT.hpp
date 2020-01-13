@@ -27,7 +27,6 @@ typedef struct {
 	String msg;
 } payload_t;
 
-
 class MyMQTT{
 	public:
 		MyMQTT();
@@ -44,9 +43,7 @@ class MyMQTT{
 		WiFiClient wificlient;
 		std::vector<std::function<void(payload_t)>> callbacks;
 		unsigned long nextReconnect;
-		unsigned long lastTime;
-		
-		
+		unsigned long lastTime;		
 };
 
 #endif /*__MYMQTT_H__*/
